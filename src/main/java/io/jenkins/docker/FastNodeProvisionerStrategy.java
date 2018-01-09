@@ -64,7 +64,17 @@ public class FastNodeProvisionerStrategy extends Strategy {
             + snapshot.getConnectingExecutors()
             + state.getPlannedCapacitySnapshot();
 
-        int currentDemand = snapshot.getQueueLength();
+        LOGGER.log(FINEST, "Planned capacity latest={0}",
+                new Object[]{state.getPlannedCapacityLatest()});
+        
+        int currentDemand = 0;
+        if (state.getPlannedCapacityLatest() >= 1) {
+        	currentDemand = (int) state.getPlannedCapacityLatest();
+        }
+        else {
+        	currentDemand = snapshot.getQueueLength();
+        }
+        
         LOGGER.log(FINE, "Available capacity={0}, currentDemand={1}",
                 new Object[]{availableCapacity, currentDemand});
 
